@@ -7,16 +7,26 @@ export interface WSFlexMessageFormat<T extends WSFlexMessageData> {
   data: T;
 }
 
-export class WSFlexMessage<T extends WSFlexMessageData> {
-  constructor(public type: string, public data: T) {}
+export interface WSFlexEncoder<T = Record<string, unknown>> {
+  encode(data: T): string;
+  decode(encoded: string): T;
+}
 
-  // Convert the message to a string format
-  toString(): string {
-    return JSON.stringify({ type: this.type, data: this.data });
+export class WSFlexEncodedMessage {
+  // Public readonly properties
+  public readonly metadata: { type: string; length: number; keys?: number };
+  public readonly payload: string;
+
+  constructor(metadata: { type: string; length: number; keys?: number }, payload: string) {
+    this.metadata = metadata;
+    this.payload = payload;
   }
 
-  // Return the raw JSON object
-  toJson(): WSFlexMessageFormat<T> {
-    return { type: this.type, data: this.data };
+  // Returns the entire encoded message as a string
+  toString(): string {
+    return JSON.stringify({
+      metadata: this.metadata,
+      payload: this.payload,
+    });
   }
 }

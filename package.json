@@ -4,6 +4,7 @@
   "description": "A lightweight and flexible library for encoding and decoding WebSocket messages.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "test": "npx jest"
